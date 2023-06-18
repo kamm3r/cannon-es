@@ -1,0 +1,41 @@
+---
+import { SITE } from '../../consts';
+import SkipToContent from './SkipToContent.astro';
+import SidebarToggle from './SidebarToggle.astro';
+import ThemeToggleButton from './themeToggleButton.astro';
+
+type Props = {
+  currentPage: string;
+  isNotFound: boolean;
+};
+
+const { currentPage } = Astro.props;
+const isLanding = currentPage === '/' || !!Astro.props.isNotFound;
+---
+
+<header
+  class="sticky top-0 z-40 max-h-full w-full bg-gray-50 transition-colors duration-300 dark:bg-[hsla(216,17%,6%,1)]"
+>
+  <SkipToContent />
+  <nav
+    class="relative mx-auto flex max-w-screen-2xl flex-wrap items-center justify-between gap-4 py-4 md:flex-nowrap"
+    title="Top Navigation"
+  >
+    <div class="md:hidden">
+      <SidebarToggle isLanding={isLanding} />
+    </div>
+    <div class="flex flex-1 items-center justify-start gap-4">
+      <a
+        class="flex flex-shrink-0 items-end text-xl font-semibold leading-none transition-colors duration-100 ease-out md:w-auto md:text-4xl gap-2"
+        href="/"
+      >
+        <h1 class="m-0 hidden md:block">{SITE.title ?? 'Documentation'}</h1>
+      </a>
+    </div>
+    <div style="flex-grow: 1;"></div>
+    <div class="flex-1 items-center justify-end gap-4 flex">
+      <ThemeToggleButton />
+      <!--  <Search client:idle /> -->
+    </div>
+  </nav>
+</header>

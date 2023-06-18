@@ -1,0 +1,16 @@
+---
+type Props = {
+  title: string;
+};
+
+const { title } = Astro.props;
+---
+
+<article id="article" class="flex w-full max-w-[75ch] flex-col">
+  <header class="main-section">
+    <h1 class="mb-4 text-5xl font-bold tracking-tighter" id="overview">
+      {title}
+    </h1>
+  </header>
+  <slot />
+</article>

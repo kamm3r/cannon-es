@@ -29,7 +29,7 @@ yarn add cannon-es
 ## Usage
 
 ```js
-import { World } from 'cannon-es'
+import { World } from "cannon-es";
 
 // ...
 ```
@@ -37,7 +37,7 @@ import { World } from 'cannon-es'
 or, if you're using webpack, you can import it like this while still taking advantage of tree shaking:
 
 ```js
-import * as CANNON from 'cannon-es'
+import * as CANNON from "cannon-es";
 
 // ...
 ```

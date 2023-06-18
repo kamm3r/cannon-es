@@ -1,0 +1,47 @@
+{
+  "name": "cannon-es",
+  "type": "module",
+  "version": "0.20.0",
+  "license": "MIT",
+  "description": "A lightweight 3D physics engine written in JavaScript.",
+  "homepage": "https://github.com/schteppe/cannon.js",
+  "author": "Stefan Hedman <schteppe@gmail.com> (http://steffe.se)",
+  "contributors": [
+    "Cody Persinger <codypersinger@gmail.com> (https://github.com/codynova)",
+    "Marco Fugaro <marco.fugaro@gmail.com> (https://github.com/marcofugaro)"
+  ],
+  "keywords": [
+    "cannon.js",
+    "cannon",
+    "physics",
+    "engine",
+    "3d"
+  ],
+  "main": "dist/cannon-es.js",
+  "module": "dist/cannon-es.mjs",
+  "react-native": "dist/cannon-es.js",
+  "types": "dist/cannon-es.d.ts",
+  "scripts": {
+    "build": "tsup src/cannon-es.ts --format cjs, es, --dts",
+    "lint": "tsc",
+    "test": "vitest",
+    "coverage": "vitest run --coverage",
+    "prepublishOnly": "pnpm build && pnpm test",
+    "format": "prettier --write src/",
+    "format:check": "prettier --check src/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pmndrs/cannon-es.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pmndrs/cannon-es/issues"
+  },
+  "devDependencies": {
+    "@types/node": "^20.3.0",
+    "prettier": "^2.8.8",
+    "tsup": "^6.7.0",
+    "typescript": "^5.1.3",
+    "vitest": "^0.32.0"
+  }
+}
