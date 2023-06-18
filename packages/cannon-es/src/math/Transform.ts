@@ -36,12 +36,13 @@ export class Transform {
 	set scale(value: Vec3) {
 		this.scale = value;
 	}
-	get root(): Transform {
-		return this.GetRoot();
-	}
-	private GetRoot(): Transform {
-		return new Transform();
-	}
+	// Returns the topmost transform in the hierarchy
+//	get root(): Transform {
+//		return this.GetRoot();
+//	}
+//	private GetRoot(): Transform {
+//		return new Transform();
+//	}
 	/**
 	 * Position of the transform relative to the parent transform
 	 */
