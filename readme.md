@@ -1,4 +1,5 @@
 # cannon-es
+#### Status: Currently broken
 
 This is a maintained fork of [cannon.js](https://github.com/schteppe/cannon.js), originally created by Stefan Hedman [@schteppe](https://github.com/schteppe).
 
