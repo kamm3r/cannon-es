@@ -12,7 +12,8 @@ const Space = {
 type Space = (typeof Space)[keyof typeof Space];
 
 /**
- * Transformation utilities.
+ * Transform class
+ * Tanslation, rotation and scale of an object.
  */
 export class Transform {
 	/** The position of the transform in world space */
@@ -36,79 +37,56 @@ export class Transform {
 	set scale(value: Vec3) {
 		this.scale = value;
 	}
-	// Returns the topmost transform in the hierarchy
-//	get root(): Transform {
-//		return this.GetRoot();
-//	}
-//	private GetRoot(): Transform {
-//		return new Transform();
-//	}
-	/**
-	 * Position of the transform relative to the parent transform
-	 */
+	/** Position of the transform relative to the parent transform */
 	get localTranslation(): Vec3 {
 		return Vec3.zero;
 	}
 	set localTranslation(value: Vec3) {
 		this.localTranslation = value;
 	}
-	/**
-	 * The rotation of the transform relative to the parent transform's rotation
-	 */
+	/** The rotation of the transform relative to the parent transform's rotation */
 	get localRotation(): Quaternion {
 		return Quaternion.identity;
 	}
 	set localRotation(value: Quaternion) {
 		this.localRotation = value;
 	}
-	/**
-	 * The scale of the transform relative to the parent.
-	 */
+	/** The scale of the transform relative to the parent */
 	get localScale(): Vec3 {
 		return Vec3.zero;
 	}
 	set localScale(value: Vec3) {
 		this.localScale = value;
 	}
-	/**
-	 * The rotation as Euler angles in degrees
-	 */
+	/** The rotation as Euler angles in degrees */
 	get eulerAngles(): Vec3 {
 		return this.rotation.eulerAngles;
 	}
 	set eulerAngles(value: Vec3) {
 		this.rotation = Quaternion.Euler(value);
 	}
-	/**
-	 * The rotation as Euler angles in degrees relative to the parent transform's rotation
-	 */
+	/** The rotation as Euler angles in degrees relative to the parent transform's rotation */
 	get localEulerAngles(): Vec3 {
 		return this.localRotation.eulerAngles;
 	}
 	set localEulerAngles(value: Vec3) {
 		this.localRotation = Quaternion.Euler(value);
 	}
-	/**
-	 * The blue axis of the transform in world space
-	 */
+	/** The blue axis of the transform in world space */
 	get forward(): Vec3 {
 		return Quaternion.multiplyWithVec3(this.rotation, Vec3.forward);
 	}
 	set forward(value: Vec3) {
 		this.rotation = Quaternion.LookRotation(value);
 	}
-	/**
-	 * The red axis of the transform in world space
-	 */
+	/** The red axis of the transform in world space */
 	get right(): Vec3 {
 		return Quaternion.multiplyWithVec3(this.rotation, Vec3.right);
 	}
 	set right(value: Vec3) {
 		this.rotation = Quaternion.FromToRotation(Vec3.right, value);
 	}
-	/**
-	 * The green axis of the transform in world space
-	 */
+	/** The green axis of the transform in world space */
 	get up(): Vec3 {
 		return Quaternion.multiplyWithVec3(this.rotation, Vec3.up);
 	}
@@ -121,6 +99,36 @@ export class Transform {
 	}
 	get localToWorldMatrix(): Mat4 {
 		return Mat4.TRS(this.localTranslation, this.localRotation, this.localScale);
+	}
+	/** Has the transform changed since the last time the flag was set to 'false'? */
+	get hasChanged(): boolean {
+		if (this.parent !== null && this.parent.hasChanged) {
+			return true
+		} else if (this.translation !== this.localTranslation) {
+			return true
+		} else if (this.rotation !== this.localRotation) {
+			return true
+		} else if (this.scale !== this.localScale) {
+			return true
+		} else {
+			return false;
+		}
+	}
+	set hasChanged(value: boolean) {
+		this.hasChanged = value;
+	}
+	/** The parent of the transform */
+	get parent(): Transform {
+		return new Transform();
+	}
+	set parent(value: Transform) {
+		this.SetParent(value, true);
+	}
+	/** Set the parent of the transform */
+	SetParent(parent: Transform, worldTranslationStays: boolean): void {
+		if (worldTranslationStays) {
+			this.parent = parent;
+		}
 	}
 
 	Translate(translation: Vec3): void {
@@ -199,41 +207,5 @@ export class Transform {
 	/** Transforms point from world space to local space */
 	InverseTransformPoint(world: Vec3): Vec3 {
 		return this.worldToLocalMatrix.MultiplyPoint3x4(world);
-	}
-	get hasChanged(): boolean {
-		if (this.parent !== null && this.parent.hasChanged) {
-			return true
-		} else if (this.translation !== this.localTranslation) {
-			return true
-		} else if (this.rotation !== this.localRotation) {
-			return true
-		} else if (this.scale !== this.localScale) {
-			return true
-		} else {
-			return false;
-		}
-	}
-	set hasChanged(value: boolean) {
-		this.hasChanged = value;
-	}
-	get parent(): Transform {
-		return this.parentInternal;
-	}
-	set parent(value: Transform) {
-		this.parentInternal = value;
-	}
-	private get parentInternal(): Transform {
-		return this.GetParent();
-	}
-	private set parentInternal(value: Transform) {
-		this.SetParent(value, true);
-	}
-	private GetParent(): Transform {
-		return new Transform();
-	}
-	SetParent(parent: Transform, worldTranslationStays: boolean): void {
-		if (worldTranslationStays) {
-			this.parent = parent;
-		}
 	}
 }
